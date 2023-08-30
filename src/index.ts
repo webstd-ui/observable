@@ -102,7 +102,7 @@ export function Observable<Target extends Constructor<any>>(
 
                 Object.defineProperty(this, backingRef, {
                     value:
-                        typeof initialValue.value === "object"
+                        typeof initialValue.value === "object" || initialValue.value === "undefined"
                             ? reactive(initialValue.value)
                             : ref(initialValue.value),
                     writable: true,
@@ -122,6 +122,10 @@ export function Observable<Target extends Constructor<any>>(
                         }
                     },
                 })
+
+                // TODO: Don't override existing getter/setter pairs
+                // TODO: Memoize lone getters
+                // TODO: Make sure to explicitly ignore functions
             }
         }
     } as Target
